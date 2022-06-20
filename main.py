@@ -33,7 +33,8 @@ def linux_windows(linux, windows):
 def select_source_directory():
     print("Selecione um arquivo qualquer da fonte de arquivos de PDF's")
     full_path = filedialog.askopenfilename()
-    target_folder = linux_windows('/'.join(full_path.split('/')[:-1]), '\\'.join(full_path.split("\\")[:-1]))
+    print(full_path)
+    target_folder = '/'.join(full_path.split('/')[:-1])
     print(f"Os arquivos serão gerados a partir dos PDF's em {target_folder}")
     return target_folder
 
@@ -49,7 +50,10 @@ def create_output_folder(base_path):
 def rename_files(files, target, ids):
     validate(ids, files)
     for pdf, id in zip(files, ids):
-        copyfile(pdf, target + f"{id}_VT.pdf")
+        new_name = target + f"{id}_VT.pdf"
+        copyfile(pdf, new_name)
+        print(f"{new_name} salvo")
+    input("Operação finalizada.")
 
 def validate(ids, files):
     qtd_ids = len(ids)
