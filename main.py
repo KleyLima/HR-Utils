@@ -3,11 +3,13 @@ from tkinter import filedialog
 from os import listdir, mkdir
 import sys
 from shutil import copyfile
+import re
 
 def main():
     ids = get_ids()
     source = select_source_directory()
     files = get_files_to_rename(source)
+    [print(fil) for fil in files]
     output = create_output_folder(source)
     rename_files(files, output, ids)
 
@@ -39,7 +41,8 @@ def select_source_directory():
     return target_folder
 
 def get_files_to_rename(path):
-    files = sorted(listdir(path)) 
+    files = sorted(listdir(path))
+    files = sorted(files, key=lambda x:int(x.split('-')[-1][:-4]))
     return [linux_windows(f"{path}/{pdf}", f"{path}\\{pdf}") for pdf in files]
 
 def create_output_folder(base_path):
