@@ -7,11 +7,12 @@ import re
 
 def main():
     ids = get_ids()
+    prefix = get_prefix()
     source = select_source_directory()
     files = get_files_to_rename(source)
     [print(fil) for fil in files]
     output = create_output_folder(source)
-    rename_files(files, output, ids)
+    rename_files(files, output, ids, prefix)
 
 def get_ids():
     ids = []
@@ -50,10 +51,10 @@ def create_output_folder(base_path):
     mkdir(new_dir)
     return new_dir
 
-def rename_files(files, target, ids):
+def rename_files(files, target, ids, prefix):
     validate(ids, files)
     for pdf, id in zip(files, ids):
-        new_name = target + f"{id}_VT.pdf"
+        new_name = target + f"{id}_{prefix}.pdf"
         copyfile(pdf, new_name)
         print(f"{new_name} salvo")
     input("Operação finalizada.")
@@ -63,6 +64,9 @@ def validate(ids, files):
     qtd_files = len(files)
     if qtd_ids != qtd_files:
         raise Exception(f"O número de matrículas deve ser igual o número de arquivos. Matrículas: {qtd_ids}. Arquivos: {qtd_files}")
+
+def get_prefix():
+    return input("Digite qual será o prefixo dos arquivos renomeados. Obs: Sem '_' ou '-': ")
 
 if __name__ == '__main__':
     root = tk.Tk()
